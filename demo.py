@@ -2,7 +2,7 @@ from matrix import Matrix, Vector
 
 a = Matrix(
     [
-        [1,2],
+        [1,7],
         [3,4],
     ]
 )
@@ -47,13 +47,16 @@ h = i.add(j)
 h.show()
 
 
-print(a.matrix) # all of the matrix in lists format
+print(a.matrix) # all of the matrix in list format
 
 b.vector = [1,2,6,8,9,7]
 
-print(a()) # all of the matrix in lists format
+a().show() # all of the matrix in lists format
 print(a(1,1)) # elem (1,1)
 
-print(a(0)) # all of line 0
-print(a(None, 0)) # all of column 0
+a(0).show() # all of line 0
+a(None, 0).show() # all of column 0
 print(b(4))
+
+print(a.trace())
+print(b.trace())

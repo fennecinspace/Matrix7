@@ -2,6 +2,15 @@ class Matrix:
     def __init__(self, mat):
         self.matrix = mat
 
+    def trace(self):
+        trace = 0
+        if len(self.matrix) == len(self.matrix[0]):
+            for i in range(len(self.matrix)):
+                trace += self.matrix[i][i]
+            return trace
+        else:
+            return None
+
     @classmethod
     def check_size(self, a,b):
         if len(a) != len(b):
@@ -95,13 +104,13 @@ class Matrix:
     
     def __call__(self, row = None, col = None):
         if row == None and col == None:
-            return self.matrix
+            return self
 
         elif row == None:
-            return self.get_col(self, col)
+            return Vector(self.get_col(self, col))
 
         elif col == None:
-            return self.get_line(self, row)
+            return Vector(self.get_line(self, row), transpose = True)
         else:
             return self.matrix[row][col]
 
@@ -138,6 +147,6 @@ class Vector(Matrix):
 
     def __call__(self, elem = None):
         if elem == None:
-            return self.vector
+            return self
         else:
             return self.vector[elem]
