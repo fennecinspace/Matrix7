@@ -30,19 +30,17 @@ class Matrix:
 
         return True
 
-
     def add(self, b):
         if self.check_size(self.matrix, b.matrix):
             c = []
             for i in range(len(self.matrix)):
                 c += [[]]
-                for j in range(len(b.matrix)):
+                for j in range(len(self.matrix[i])):
                     c[i] += [self.matrix[i][j] + b.matrix[i][j]]
             
             return Matrix(c)
         else:
             return None
-
 
     def sub(self, b):
         if self.check_size(self.matrix, b.matrix):
@@ -50,7 +48,7 @@ class Matrix:
             c = []
             for i in range(len(self.matrix)):
                 c += [[]]
-                for j in range(len(b.matrix)):
+                for j in range(len(self.matrix[i])):
                     c[i] += [self.matrix[i][j] - b.matrix[i][j]]
             
             return Matrix(c)
@@ -93,7 +91,6 @@ class Matrix:
             print('|')
         print()
 
-
     def transpose(self):
         c = []
         for i in range(len(self.matrix[0])): 
@@ -101,7 +98,6 @@ class Matrix:
 
         return Matrix(c)
 
-    
     def __call__(self, row = None, col = None):
         if row == None and col == None:
             return self
@@ -113,7 +109,6 @@ class Matrix:
             return Vector(self.get_line(self, row), transpose = True)
         else:
             return self.matrix[row][col]
-
 
 
 
@@ -150,3 +145,23 @@ class Vector(Matrix):
             return self
         else:
             return self.vector[elem]
+
+    def add(self, b):
+        res = super().add(b)
+        if res:
+            if len(res.matrix) == 1:
+                return res(0)
+            else:
+                return res(None, 0)
+        else:
+            return None
+
+    def sub(self, b):
+        res = super().sub(b)
+        if res:
+            if len(res.matrix) == 1:
+                return res(0)
+            else:
+                return res(None, 0)
+        else:
+            return None
