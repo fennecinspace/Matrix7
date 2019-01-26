@@ -110,6 +110,8 @@ class Matrix:
         else:
             return self.matrix[row][col]
 
+    def size(self):
+        return self.matrix.__len__(), self.matrix[0].__len__()
 
 
 class Vector(Matrix):
@@ -139,13 +141,6 @@ class Vector(Matrix):
     def vector(self, value):
         self.matrix = self.create_mat(value, self.transposed)
 
-
-    def __call__(self, elem = None):
-        if elem == None:
-            return self
-        else:
-            return self.vector[elem]
-
     def add(self, b):
         res = super().add(b)
         if res:
@@ -165,3 +160,15 @@ class Vector(Matrix):
                 return res(None, 0)
         else:
             return None
+
+    def __call__(self, elem = None):
+        if elem == None:
+            return self
+        else:
+            return self.vector[elem]
+
+    def transpose(self):
+        if self.transposed:
+            return Vector(self.vector, transpose = False)
+        else:
+            return Vector(self.vector, transpose = True)

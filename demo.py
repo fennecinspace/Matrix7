@@ -60,3 +60,6 @@ print(b(4))
 
 print(a.trace())
 print(b.trace())
+
+print(a.size())
+print(b.size())
