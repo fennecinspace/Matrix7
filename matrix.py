@@ -1,6 +1,19 @@
 class Matrix:
     def __init__(self, mat):
+        sizeY = mat[0].__len__()
+        for i in range(mat.__len__()):
+            if sizeY != mat[i].__len__():
+                raise ValueError("Invalid Line {}".format(i))
         self.matrix = mat
+
+    @classmethod
+    def gen(self, l, c, fill = 0):
+        mat = []
+        for i in range(l):
+            mat += [[]]
+            for j in range(c):
+                mat[i] += [fill]
+        return Matrix(mat)
 
     def trace(self):
         trace = 0
@@ -117,7 +130,6 @@ class Matrix:
 class Vector(Matrix):
     def __init__(self, vect, transpose = False):
         self.transposed = transpose
-
         super().__init__(self.create_mat(vect, transpose))
 
     @classmethod
@@ -129,6 +141,13 @@ class Vector(Matrix):
             for elem in vect:
                 mat += [[elem]]
         return mat
+
+    @classmethod
+    def gen(self, c, fill = 0, transpose = False):
+        vect = []
+        for i in range(c):
+            vect += [fill]
+        return Vector(vect)
 
     @property
     def vector(self):
