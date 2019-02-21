@@ -1,193 +1,107 @@
 class Matrix:
     def __init__(self, mat):
-        sizeY = mat[0].__len__()
-        for i in range(mat.__len__()):
-            if sizeY != mat[i].__len__():
-                raise ValueError("Invalid Line {}".format(i))
-        self.matrix = mat
+        l_size = len(mat[0])
+        for line in mat:
+            if l_size != len(line):
+                raise ValueError('invalid matrix sizes')
+        self._raw = mat
 
-    @classmethod
-    def gen(self, l, c, fill = 0):
-        mat = []
-        for i in range(l):
-            mat += [[]]
-            for j in range(c):
-                mat[i] += [fill]
-        return Matrix(mat)
+    @property
+    def raw(self):
+        return self._raw
 
+    @property
     def trace(self):
-        trace = 0
-        if len(self.matrix) == len(self.matrix[0]):
-            for i in range(len(self.matrix)):
-                trace += self.matrix[i][i]
-            return trace
-        else:
-            return None
+        if self.size[0] == self.size[1]:
+            return sum([ self[i][j] for j in range(self.size[0]) for i in range(self.size[1]) ])
+        else: print('nb lines != nb columns')
 
-    @classmethod
-    def check_size(self, a,b):
-        if len(a) != len(b):
-            return False
+    @property
+    def size(self):
+        return self._raw.__len__(), self._raw[0].__len__()
 
-        for i in range(len(a)):
-            if len(a[i]) != len(b[i]):
-                return False
-
-        return True
-
-    @classmethod
-    def check_size_2(self, a, b):
-        for i in range(len(a)):
-            if len(a[i]) != len(b):
-                return False
-
-        return True
-
-    def add(self, b):
-        if self.check_size(self.matrix, b.matrix):
-            c = []
-            for i in range(len(self.matrix)):
-                c += [[]]
-                for j in range(len(self.matrix[i])):
-                    c[i] += [self.matrix[i][j] + b.matrix[i][j]]
-            
-            return Matrix(c)
-        else:
-            return None
-
-    def sub(self, b):
-        if self.check_size(self.matrix, b.matrix):
-
-            c = []
-            for i in range(len(self.matrix)):
-                c += [[]]
-                for j in range(len(self.matrix[i])):
-                    c[i] += [self.matrix[i][j] - b.matrix[i][j]]
-            
-            return Matrix(c)
-        else:
-            return None
-
-    @classmethod
-    def get_col(self, matrix, index):
-        col = []
-        for line in matrix.matrix:
-            col += [line[index]]
-        return col
-
-    @classmethod
-    def get_line(self, matrix, index):
-        return matrix.matrix[index]
-
-    def mul(self, b):
-        if self.check_size_2(self.matrix, b.matrix):
-            c = []
-            for i in range(len(self.matrix)):
-                c += [[]]
-                for j in range(len(b.matrix[0])):
-                    c[i] += [0]
-
-            for i in range(len(c)):
-                for j in range(len(c[i])):
-                    c[i][j] = sum([m*n for m,n in zip(self.get_line(self, i), self.get_col(b, j))])
-
-            return Matrix(c)
-        else:
-            return None
-
-    def show(self):
-        print()
-        for l in self.matrix:
-            print('| ', end = '')
+    def __str__(self):
+        s = "\n"
+        for l in self._raw:
+            s +='| '
             for c in l:
-                print('{:6.2f} '.format( round(float(c), 3)), end = "")
-            print('|')
-        print()
+                s += '{:6.2f} '.format( round(float(c), 3))
+            s +=  '|\n'
+        return s
+
+    @classmethod
+    def col(self, matrix, index, raw = False):
+        col = [ line[index] for line in matrix._raw ]
+        if raw: return col
+        else: return Vector(col)
 
     def transpose(self):
-        c = []
-        for i in range(len(self.matrix[0])): 
-            c +=  [self.get_col(self, i)]
+        return Matrix([ self.col(self, i, True) for i in range(self.size[0]) ])
 
-        return Matrix(c)
-
-    def __call__(self, row = None, col = None):
-        if row == None and col == None:
-            return self
-
-        elif row == None:
-            return Vector(self.get_col(self, col))
-
-        elif col == None:
-            return Vector(self.get_line(self, row), transpose = True)
+    def __setitem__(self, key, item):
+        if not type(item).__name__ == 'list' or len(item) != self.size[0]:
+            print('invalid assignement')
         else:
-            return self.matrix[row][col]
+            self._raw[key] = item
 
-    def size(self):
-        return self.matrix.__len__(), self.matrix[0].__len__()
+    def __getitem__(self, key):
+        return Vector(self._raw[key], transpose = True)
+
+    def __add__(self, other):
+        if type(other).__name__ == 'Matrix' or type(other).__name__ == 'Vector':
+            if self.size[0] == other.size[0] and self.size[1] == other.size[1]:
+                return Matrix([ [ self[i][j] + other[i][j] for j in range(self.size[1])] for i in range(self.size[0])])
+        else:
+            try: return Matrix([ [ self[i][j] + other for j in range(self.size[1])] for i in range(self.size[0])])
+            except: print('cannot add')
+        
+    def __sub__(self, other):
+        if type(other).__name__ == 'Matrix' or type(other).__name__ == 'Vector':
+            if self.size[0] == other.size[0] and self.size[1] == other.size[1]:
+                return Matrix([ [ self[i][j] - other[i][j] for j in range(self.size[1])] for i in range(self.size[0])])
+        else:
+            try: return Matrix([ [ self[i][j] - other for j in range(self.size[1])] for i in range(self.size[0])])
+            except: print('cannot substract')
+
+    def __mul__(self, other):
+        if type(other).__name__ == 'Matrix' or type(other).__name__ == 'Vector':
+            if self.size[1] == other.size[0]:
+                c = [ [ 0 for j in range(other.size[1]) ] for i in range(self.size[1]) ]
+                for i in range(len(c)):
+                    for j in range(len(c[i])):
+                        c[i][j] = sum([m*n for m,n in zip(self._raw[i], self.col(other, j, True))])
+                return Matrix(c)
+        else:
+            try: return Matrix([ [ self[i][j] * other for j in range(self.size[1])] for i in range(self.size[0])])
+            except: print('cannot substract')
 
 
 class Vector(Matrix):
     def __init__(self, vect, transpose = False):
         self.transposed = transpose
-        super().__init__(self.create_mat(vect, transpose))
-
-    @classmethod
-    def create_mat(self, vect, transpose):
-        if transpose:
-            mat = [vect]
-        else:
-            mat = []
-            for elem in vect:
-                mat += [[elem]]
-        return mat
-
-    @classmethod
-    def gen(self, c, fill = 0, transpose = False):
-        vect = []
-        for i in range(c):
-            vect += [fill]
-        return Vector(vect)
+        super().__init__([vect] if transpose else [ [elem] for elem in vect ] )
 
     @property
-    def vector(self):
+    def raw(self):
         if self.transposed:
-            return self.matrix[0]
+            return self._raw[0]
         else:
-            return self.get_col(self, 0)
+            return self.col(self, 0, True)
 
-    @vector.setter
-    def vector(self, value):
-        self.matrix = self.create_mat(value, self.transposed)
-
-    def add(self, b):
-        res = super().add(b)
-        if res:
-            if len(res.matrix) == 1:
-                return res(0)
-            else:
-                return res(None, 0)
-        else:
-            return None
-
-    def sub(self, b):
-        res = super().sub(b)
-        if res:
-            if len(res.matrix) == 1:
-                return res(0)
-            else:
-                return res(None, 0)
-        else:
-            return None
-
-    def __call__(self, elem = None):
-        if elem == None:
-            return self
-        else:
-            return self.vector[elem]
-
-    def transpose(self):
+    def __setitem__(self, key, item):
         if self.transposed:
-            return Vector(self.vector, transpose = False)
+            self._raw[0][key] = item
         else:
-            return Vector(self.vector, transpose = True)
+            self._raw[key][0] = item
+
+    def __getitem__(self, key):
+        if self.transposed:
+            if type(self._raw[0][key]).__name__ == 'list':
+                return Vector(self._raw[0][key])
+            else:
+                return self._raw[0][key]
+        else:
+            if type(self._raw[key][0]).__name__ == 'list':
+                return Vector(self._raw[key][0])
+            else:
+                return self._raw[key][0]

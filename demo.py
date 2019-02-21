@@ -1,65 +1,53 @@
 from matrix import Matrix, Vector
 
-a = Matrix(
-    [
-        [1,7],
-        [3,4],
-    ]
-)
+a = Matrix([
+    [1,7],
+    [3,4],
+])
 
+b = Matrix([
+    [1,5],
+    [10,1],
+])
 
-a.show()
+c = Vector( [2,4] )
 
-b = Vector( [2,4] )
+d = Vector( [1,4] , transpose = True )
 
-c = Vector( [1,4] , transpose = True )
-c.show()
+print(a,b,c,d)
 
-x = a.mul(b)
+# mat mat
+print( a * b )
 
-y = b.mul(c)
+# mat vect
+print( a * c )
+
+# vect vect
+print( c * d )
+# print( d * c )
+
+# vect mat
+# print( d * a )
+
 
 a_t = a.transpose()
-a_t.show()
+print(a_t)
 
 
-i = Matrix(
-    [
-        [1,3],
-        [1,2],
-    ]
-)
-i.show()
+print( a - b )
+print( a + b )
 
-j = Matrix(
-    [
-        [100,0],
-        [10,5],
-    ]
-)
-j.show()
+print( a.raw )
+print( b.raw )
+print( c.raw )
+print( d.raw )
 
+print(a[1][1]) # elem (1,1)
 
-h = i.sub(j)
-h.show()
+print(a[0])
 
-h = i.add(j)
-h.show()
+print(a.trace)
 
+print(a.size)
 
-print(a.matrix) # all of the matrix in list format
-
-b.vector = [1,2,6,8,9,7]
-
-a().show() # all of the matrix in lists format
-print(a(1,1)) # elem (1,1)
-
-a(0).show() # all of line 0
-a(None, 0).show() # all of column 0
-print(b(4))
-
-print(a.trace())
-print(b.trace())
-
-print(a.size())
-print(b.size())
+# a[1:2] ... etc
