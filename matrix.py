@@ -65,12 +65,13 @@ class Matrix:
 
     def __mul__(self, other):
         if type(other).__name__ == 'Matrix' or type(other).__name__ == 'Vector':
-            if self.size[1] == other.size[0]:
-                c = [ [ 0 for j in range(other.size[1]) ] for i in range(self.size[1]) ]
-                for i in range(len(c)):
-                    for j in range(len(c[i])):
-                        c[i][j] = sum([m*n for m,n in zip(self._raw[i], self.col(other, j, True))])
-                return Matrix(c)
+            if self.size[1] == other.size[0]: # nb c == nb l
+                res = []
+                for i in range(self.size[0]):
+                    res += [[]]
+                    for j in range(other.size[1]):
+                        res[i] += [sum([m*n for m,n in zip(self._raw[i], self.col(other, j, True))])]
+                return Matrix(res)
         else:
             try: return Matrix([ [ self[i][j] * other for j in range(self.size[1])] for i in range(self.size[0])])
             except: print('cannot substract')

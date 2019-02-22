@@ -24,10 +24,10 @@ print( a * c )
 
 # vect vect
 print( c * d )
-# print( d * c )
+print( d * c )
 
 # vect mat
-# print( d * a )
+print( d * a )
 
 
 a_t = a.transpose()
