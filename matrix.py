@@ -28,6 +28,9 @@ class Matrix:
                 s += '{:6.2f} '.format( round(float(c), 3))
             s +=  '|\n'
         return s
+    
+    def __call__(self, index):
+        return self.col(self, index)
 
     @classmethod
     def col(self, matrix, index, raw = False):
@@ -36,7 +39,7 @@ class Matrix:
         else: return Vector(col)
 
     def transpose(self):
-        return Matrix([ self.col(self, i, True) for i in range(self.size[0]) ])
+        return Matrix([ self.col(self, i, True) for i in range(self.size[1]) ])
 
     def __setitem__(self, key, item):
         if not type(item).__name__ == 'list' or len(item) != self.size[0]:
@@ -76,6 +79,11 @@ class Matrix:
             try: return Matrix([ [ self[i][j] * other for j in range(self.size[1])] for i in range(self.size[0])])
             except: print('cannot substract')
 
+    @classmethod
+    def gen(self, l, c, fill = 0):
+        mat = [[fill for j in range(c)] for i in range(l)]
+        return Matrix(mat)
+
 
 class Vector(Matrix):
     def __init__(self, vect, transpose = False):
@@ -106,3 +114,8 @@ class Vector(Matrix):
                 return Vector(self._raw[key][0])
             else:
                 return self._raw[key][0]
+    
+    @classmethod
+    def gen(self, l, fill = 0):
+        mat = super().gen(l, 1, fill)
+        return mat(0)
