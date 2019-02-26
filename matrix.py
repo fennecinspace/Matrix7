@@ -97,6 +97,10 @@ class Vector(Matrix):
         else:
             return self.col(self, 0, True)
 
+    @property
+    def gravity(self):
+        return sum(self.raw) / len(self.raw)
+
     def __setitem__(self, key, item):
         if self.transposed:
             self._raw[0][key] = item
