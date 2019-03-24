@@ -1,73 +1,91 @@
 # Matrix7
+
 a library in pure python3 that allows you to use matrices and vectors easily
 
-
-### Examples
+#### Declarations
 
 ```python
-from matrix import Matrix, Vector
+from matrix7 import Matrix, Vector
 
-a = Matrix(
-    [
-        [1,7],
-        [3,4],
-    ]
-)
+a = Matrix([
+    [1,2,3,4,5,6,7],
+    [101,102,103,104,105,106,107],
+    [201,202,203,204,205,206,207],
+])
 
+b = Vector( [2,4,7,9] )
 
-a.show()
+c = Vector( [2,4,7,9] , transpose = True )
+```
 
-b = Vector( [2,4] )
+#### printing
 
-c = Vector( [1,4] , transpose = True )
-c.show()
+- `print(a)` :
 
-x = a.mul(b)
+```text
+|   1.00   2.00   3.00   4.00   5.00   6.00   7.00 |
+| 101.00 102.00 103.00 104.00 105.00 106.00 107.00 |
+| 201.00 202.00 203.00 204.00 205.00 206.00 207.00 |
+```
 
-y = b.mul(c)
+- `print(b)` :
+  
+```text
+|   2.00 |
+|   4.00 |
+|   7.00 |
+|   9.00 |
+```
 
-a_t = a.transpose()
-a_t.show()
+- `print(c)` :
+```text
+|   2.00   4.00   7.00   9.00 |
+```
 
+#### properties
 
-i = Matrix(
-    [
-        [1,3],
-        [1,2],
-    ]
-)
-i.show()
+```python
+a.size    # (nb lines, nb cols)
+a.trace   # only for nxn matricies
+a.raw     # matrix or vector in normal python list format
+a.gravity # only for vectors
+```
 
-j = Matrix(
-    [
-        [100,0],
-        [10,5],
-    ]
-)
-j.show()
+#### operations
 
+- normal python operations are used
+- Matrix or Vector object is returned
+- regular matrix/vector calculation rules apply
 
-h = i.sub(j)
-h.show()
+```python
+c = a + b
+c = a - b
+c = a * b
+```
 
-h = i.add(j)
-h.show()
+#### trasponse of matrix or vector
 
+```python
+a.transpose()
+```
 
-print(a.matrix) # all of the matrix in list format
+#### generation
 
-b.vector = [1,2,6,8,9,7]
+```python
+# vector containing 6 threes
+vect = Vector.gen(6, 3)
 
-a().show() # all of the matrix in lists format
-print(a(1,1)) # elem (1,1)
+# 3x4 matrix of zeroes
+mat = Matrix.gen(3, 4, 0)
+```
 
-a(0).show() # all of line 0
-a(None, 0).show() # all of column 0
-print(b(4))
+#### navigation
 
-print(a.trace())
-print(b.trace())
-
-print(a.size())
-print(b.size())
+```python
+# matrix line 0 (Vector) or vector element (int, float ..etc)
+a[0]
+# matrix column 0 (Vector)
+a(0)
+# matrix element (0,0) (int, float ..etc)
+a[0][0]
 ```

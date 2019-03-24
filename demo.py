@@ -1,4 +1,4 @@
-from matrix import Matrix, Vector
+from matrix7 import Matrix, Vector
 
 a = Matrix([
     [1,7],
