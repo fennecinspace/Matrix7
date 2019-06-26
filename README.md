@@ -2,6 +2,14 @@
 
 a library in pure python3 that allows you to use matrices and vectors easily
 
+## Setup
+
+```
+sudo pip install matrix7
+```
+
+## How to use
+
 #### Declarations
 
 ```python

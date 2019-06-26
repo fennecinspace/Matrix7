@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="matrix7",
-    version="1.1.0",
+    version="1.2.0",
     author="Mohamed Benkedadra",
     author_email="hammicristo@gmail.com",
     description="Matrix and Vector Manipulation library",

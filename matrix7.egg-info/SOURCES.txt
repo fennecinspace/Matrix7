@@ -1,0 +1,8 @@
+README.md
+setup.py
+matrix7/__init__.py
+matrix7/matrix7.py
+matrix7.egg-info/PKG-INFO
+matrix7.egg-info/SOURCES.txt
+matrix7.egg-info/dependency_links.txt
+matrix7.egg-info/top_level.txt
