@@ -14,6 +14,7 @@ c = Vector( [2,4] )
 
 d = Vector( [1,4] , transpose = True )
 
+
 print(a,b,c,d)
 
 # mat mat
@@ -36,6 +37,9 @@ print(a_t)
 
 print( a - b )
 print( a + b )
+
+print( c - c )
+print( d + c.transpose() + 100)
 
 print( a.raw )
 print( b.raw )

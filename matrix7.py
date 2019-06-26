@@ -53,17 +53,17 @@ class Matrix:
     def __add__(self, other):
         if type(other).__name__ == 'Matrix' or type(other).__name__ == 'Vector':
             if self.size[0] == other.size[0] and self.size[1] == other.size[1]:
-                return Matrix([ [ self[i][j] + other[i][j] for j in range(self.size[1])] for i in range(self.size[0])])
+                return Matrix([ [ self._raw[i][j] + other._raw[i][j] for j in range(self.size[1])] for i in range(self.size[0])])
         else:
-            try: return Matrix([ [ self[i][j] + other for j in range(self.size[1])] for i in range(self.size[0])])
+            try: return Matrix([ [ self._raw[i][j] + other for j in range(self.size[1])] for i in range(self.size[0])])
             except: print('cannot add')
         
     def __sub__(self, other):
         if type(other).__name__ == 'Matrix' or type(other).__name__ == 'Vector':
             if self.size[0] == other.size[0] and self.size[1] == other.size[1]:
-                return Matrix([ [ self[i][j] - other[i][j] for j in range(self.size[1])] for i in range(self.size[0])])
+                return Matrix([ [ self._raw[i][j] - other._raw[i][j] for j in range(self.size[1])] for i in range(self.size[0])])
         else:
-            try: return Matrix([ [ self[i][j] - other for j in range(self.size[1])] for i in range(self.size[0])])
+            try: return Matrix([ [ self._raw[i][j] - other for j in range(self.size[1])] for i in range(self.size[0])])
             except: print('cannot substract')
 
     def __mul__(self, other):
